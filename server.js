@@ -10,8 +10,15 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');    // helps us parse request payloads
 var methodOverride = require('method-override'); //better error handling
 var request = require('request'); // for sending bid requests to a live endpoint
-var redis = require("redis"); // call the redis-node module - allows our web-server to interact with our Redis server
-var client = redis.createClient(redisPort, redisAddress); // redis database for storing bucket data
+// redis stuff
+if (process.env.REDIS_URL) {
+    var rtg   = require("url").parse(process.env.REDIS_URL);
+    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+    redis.auth(rtg.auth.split(":")[1]);
+} else {
+    var redis = require("redis").createClient(redisPort, redisAddress);
+};
+
 var randomstring = require("randomstring"); // call randomstring for creating random strings to name buckets
 
 client.on('connect', function() {
