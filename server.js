@@ -13,10 +13,10 @@ var request = require('request'); // for sending bid requests to a live endpoint
 // redis stuff
 if (process.env.REDIS_URL) {
     var rtg   = require("url").parse(process.env.REDIS_URL);
-    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+    var client = require("redis").createClient(rtg.port, rtg.hostname);
     redis.auth(rtg.auth.split(":")[1]);
 } else {
-    var redis = require("redis").createClient(redisPort, redisAddress);
+    var client = require("redis").createClient(redisPort, redisAddress);
 };
 
 var randomstring = require("randomstring"); // call randomstring for creating random strings to name buckets
