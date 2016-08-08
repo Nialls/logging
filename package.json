@@ -1,0 +1,17 @@
+{
+  "name": "deal-logging",
+  "version": "1.0.0",
+  "description": "Capture requests and responses from deals",
+  "main": "server.js",
+  "dependencies": {
+    "randomstring": "^1.1.4",
+    "redis": "^2.6.0-2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Niall Jones",
+  "license": "ISC"
+}
