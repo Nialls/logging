@@ -1,4 +1,4 @@
-// setting port and address of the Redis server
+// setting port and address of the Redis server if we're not using Heroku
 
 var redisPort = process.env.REDISPORT || 6379;
 var redisAddress = process.env.REDISADDRESS || "127.0.0.1";
@@ -10,7 +10,8 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');    // helps us parse request payloads
 var methodOverride = require('method-override'); //better error handling
 var request = require('request'); // for sending bid requests to a live endpoint
-// redis stuff
+
+// if we're using heroku then grab the redis deets from the env variable in heroku, if not, use localhost and 6379
 if (process.env.REDIS_URL) {
     var rtg   = require("url").parse(process.env.REDIS_URL);
     var client = require("redis").createClient(rtg.port, rtg.hostname);
@@ -29,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // allows us to parse JSON in request bodies
 
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public')); // for rendering static resources, like the UI
 
 var webPort = process.env.PORT || 6766;        // set our port for web traffic
 
@@ -41,16 +42,17 @@ app.get("/", function(req, res) {
  	res.render('index')
 });
 
+// handles a request that needs to be logged
 app.post("/requests/*", function(req, res) {
 	var bucketId = req.path.substr(req.path.length - 7);
-	var gatewayUrl = decodeURI(req.query.gateway);
+	var gatewayUrl = decodeURI(req.query.gateway); // this is the URL that we need to make the secondary request to
 	console.log(bucketId);
 	console.log(gatewayUrl);
     var gatewayRequestPayload = req.body;
 	var hostname = req.headers.host;
 	console.log(hostname);
     if (gatewayUrl == undefined) {
-        client.hset("requests", bucketId, "something");
+        client.hset("requests", bucketId, "something"); // TODO: Something if there's no gatewayUrl defined
     } else {
         request.post({
             headers: {'X-Openrtb-Version' : '2.2'},
@@ -64,6 +66,7 @@ app.post("/requests/*", function(req, res) {
                 res.set(response.headers);
                 res.status(response.statusCode);
                 res.send(JSON.stringify(body));
+                // push all of the information to the redis db for storage
                 client.lpush(bucketId, JSON.stringify({
                     gatewayGuid: String(Date.now()) + randomstring.generate(15),
                     gatewayTimestamp: Date.now(),
@@ -81,6 +84,7 @@ app.post("/requests/*", function(req, res) {
     };
 });
 
+// create a new bucket
 app.post("/create-bucket", function(req, res) {
 	console.log(req);
 	var newBucketName = req.body.name;
@@ -113,6 +117,7 @@ app.post("/create-bucket", function(req, res) {
 	});
 });
 
+// gets a list of all buckets
 app.get("/buckets", function(req, res) {
 	client.hgetall("buckets", function(err, reply) {
 		if (reply) {
@@ -124,6 +129,7 @@ app.get("/buckets", function(req, res) {
 	});
 });
 
+// gets the descriptive information for a specific bucket
 app.get("/buckets/*", function(req, res) {
 	var bucketId = req.path.substr(req.path.length - 7);
 	console.log(bucketId);
@@ -137,10 +143,16 @@ app.get("/buckets/*", function(req, res) {
 	});
 });
 
+// gets last 25 requests from a specific bucket
 app.get("/requests/*", function(req, res) {
+    if (req.query.range) {
+        var requestRange = req.query.range
+    } else {
+        var requestRange = 24
+    };
 	var bucketId = req.path.substr(req.path.length - 7);
 	console.log(bucketId);
-    client.lrange(bucketId, 0, 24, function(err, reply) {
+    client.lrange(bucketId, 0, requestRange, function(err, reply) {
 		if (reply) {
             var requestsArray = [];
             for (i = 0; i < reply.length; i++) {
