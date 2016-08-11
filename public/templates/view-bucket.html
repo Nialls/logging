@@ -1,11 +1,20 @@
-<div class="row">
+<div class="row" ng-init="getRequests(25)">
     <span class="pull-left" style="font-size: 30px; margin-top: 20px">{{ buckets[bucketId].name }}</span><span class="pull-right" style="font-size: 30px; margin-top: 20px"><strong>ID: </strong>{{ bucketId}}</span>
 </div>
 <div class="row">
     <hr>
 </div>
 <div class="row">
-        <!-- Button trigger modal -->
+    
+    <div class="btn-group btn-group-lg pull-left" role="group" aria-label="..." >
+      <button type="button" class="btn btn-primary btn-lg " ng-click="getRequests(25)">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button type="button" class="btn btn-lg btn-default" ng-click="getRequests(5)">5</button>
+      <button type="button" class="btn btn-lg btn-default" ng-click="getRequests(50)">50</button>
+      <button type="button" class="btn btn-lg btn-default" ng-click="getRequests(75)">75</button>
+    </div>
+    
     <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#myModal">
       Generate bucket endpoint
     </button>
@@ -16,7 +25,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Generate endpoint URL for {{ bucketId }}</h4>
+            <h4 class="modal-title" id="myModalLabel">Generate endpoint URL for <strong>{{ bucketId }}</strong></h4>
           </div>
           <div class="modal-body">
             <form>
@@ -37,4 +46,46 @@
         </div>
       </div>
     </div>
+</div>
+
+<div class="row">
+    <hr>
+    <div style="overflow-y: scroll">
+        <div id="wrapper" style="text-align: center" ng-show="requests.length == 0">    
+            <div id="yourdiv" style="display: inline-block"><span style="font-size: 30px; color: gray">No recorded requests!</span></div>
+        </div>
+        <div class="panel panel-default" ng-repeat="request in requests">
+                        <div class="panel-heading">
+                            <span class="label label-info">{{ request.gatewayResponseCode }}</span> <strong>&nbsp;&nbsp; POST</strong>   {{ request.gatewayRequestUrl }}
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Response/Request
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Response</a>
+                                        </li>
+                                        <li><a href="#">Request</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form>
+              <div class="form-group">
+                <label for="requestBody">Request Body</label>
+                <input value="{{ request.gatewayBody}}" class="form-control" id="requestBody" readonly>
+              </div>
+              <div class="form-group">
+                <label for="responseBody">Response Body</label>
+                  <input value="{{ request.gatewayResponseBody }}" class="form-control" id="responseBody" placeholder="Empty response body" readonly></input>
+              </div>
+            </form>
+                        </div>
+                        <!-- /.panel-body -->
+                </div>
+                    </div>
 </div>
