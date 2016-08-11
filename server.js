@@ -65,7 +65,7 @@ app.post("/requests/*", function(req, res) {
             } else {
                 res.set(response.headers);
                 res.status(response.statusCode);
-                res.send(JSON.stringify(body));
+                res.send(body);
                 // push all of the information to the redis db for storage
                 client.lpush(bucketId, JSON.stringify({
                     gatewayGuid: String(Date.now()) + randomstring.generate(15),
