@@ -14,10 +14,6 @@
       <button type="button" class="btn btn-lg btn-default" ng-click="getRequests(50)">50</button>
       <button type="button" class="btn btn-lg btn-default" ng-click="getRequests(75)">75</button>
     </div>
-    
-    <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#myModal">
-      Generate bucket endpoint
-    </button>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -46,17 +42,21 @@
         </div>
       </div>
     </div>
-</div>
 
-    
-    <div class="btn-group btn-group-lg pull-right" role="group" aria-label="..." >
-        <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#myModal">
+
+        <div class="btn-group btn-group-lg pull-right" role="group" aria-label="..." >
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
           Generate bucket endpoint
         </button>
         <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editModal">
           Edit bucket
         </button>
     </div>
+
+</div>
+
+    
+
 
     <!-- Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
@@ -74,7 +74,7 @@
               </div>
               <div class="form-group">
                 <label for="urlOutput">Change bucket description</label>
-                  <input ng-model="descInput" class="form-control" value="{{ buckets[bucketId].desc }}" id="descInput" placeholder="Your endpoint will appear here" readonly></input>
+                  <input ng-model="descInput" class="form-control" value="{{ buckets[bucketId].desc }}" id="descInput"></input>
               </div>
             </form>
           </div>
