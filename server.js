@@ -73,7 +73,7 @@ app.post("/requests/*", function(req, res) {
                     gatewayRequestUrl: gatewayUrl,
                     gatewayOriginHost: hostname,
                     gatewayBody: JSON.stringify(gatewayRequestPayload),
-                    gatewayResponseBody: JSON.stringify(body),
+                    gatewayResponseBody: body,
                     gatewayResponseCode: response.statusCode,
                     gatewayResponseHeaders: JSON.stringify(response.headers),
                     gatewayRequestHeaders: JSON.stringify(req.headers)
