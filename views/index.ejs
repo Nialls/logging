@@ -274,7 +274,7 @@
         bidLogger.controller('ViewBucketController', function($scope, $routeParams) {
             $scope.bucketId = $routeParams.bucketId;
             $scope.generateUrl = function () {
-                $scope.urlOutput = "http://you-wot-mate-logging.herokuapp.com/requests/" + $scope.bucketId + "?gateway=" + encodeURIComponent($scope.urlInput)
+                $scope.urlOutput = "http://logging.nialljones.com/requests/" + $scope.bucketId + "?gateway=" + encodeURIComponent($scope.urlInput)
                 $scope.$apply();
             };
             
@@ -302,7 +302,34 @@
                         console.log(errorThrown);
                         $scope.$apply()
                     });
-            }
+            };
+            
+            $scope.editBucket = function() {
+                var editBucketPayload = JSON.stringify({name: $scope.nameInput, desc: $scope.descInput, id: $scope.bucketId});
+                $.ajax(
+                    {
+                        url: "/edit-bucket",
+                        type: "POST",
+                        data: editBucketPayload,
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        dataType: 'json'
+                    }
+                )
+                    .done(function(data, textStatus, jqXHR) {
+                        $scope.grabBuckets();
+                        $scope.$apply();
+                    })
+                    .fail(function(jqXHR, statusText, errorThrown) {
+                        console.log(statusText);
+                        console.log(errorThrown);
+                        $scope.postFail = true;
+                        $scope.$apply()
+                    });
+            };
+            
+            
         });
         
         bidLogger.controller('ViewBucketsController', function($scope) {

@@ -117,6 +117,38 @@ app.post("/create-bucket", function(req, res) {
 	});
 });
 
+
+// edit an existing bucket
+app.post("/edit-bucket", function(req, res) {
+	console.log(req);
+	var editBucketName = req.body.name;
+	var editBucketDesc = req.body.desc;
+    var editBucketId   = req.body.id;
+	client.exists(editBucketId, function(err, reply) {
+	    if (reply == 1) {
+	    	console.log("Success - writing to DB");
+	        client.hset("buckets", editBucketId, JSON.stringify({
+			    'name': editBucketName,
+			    'desc': editBucketDesc,
+                'id': editBucketId,
+			    'created': Date.now()
+			}), function(err, reply) {
+			 	console.log(reply);
+			 	client.hget("buckets", editBucketId, function(err, reply) {
+			 		if (reply) {
+                        res.set('Content-Type', 'application/json');
+			 			res.send(reply);
+			 		} else {
+			 			res.send(err);
+			 		}
+				});
+			});
+	    } else {
+	    	console.log("This bucket doesn't exist");
+	    }
+	});
+});
+
 // gets a list of all buckets
 app.get("/buckets", function(req, res) {
 	client.hgetall("buckets", function(err, reply) {
