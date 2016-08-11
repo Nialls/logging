@@ -39,7 +39,7 @@ var webPort = process.env.PORT || 6766;        // set our port for web traffic
 var router = express.Router();              // get an instance of the express Router
 
 app.get("/", function(req, res) {
- 	res.render('index')
+ 	res.render('index'), {root : './'}
 });
 
 // handles a request that needs to be logged

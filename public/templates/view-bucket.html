@@ -1,0 +1,40 @@
+<div class="row">
+    <span class="pull-left" style="font-size: 30px; margin-top: 20px">{{ buckets[bucketId].name }}</span><span class="pull-right" style="font-size: 30px; margin-top: 20px"><strong>ID: </strong>{{ bucketId}}</span>
+</div>
+<div class="row">
+    <hr>
+</div>
+<div class="row">
+        <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#myModal">
+      Generate bucket endpoint
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Generate endpoint URL for {{ bucketId }}</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="urlInput">Enter DSP endpoint</label>
+                <input ng-model="urlInput" class="form-control" ng-change="generateUrl()" id="urlInput" placeholder="Enter the name of your bucket here (i.e. 'PMP Test')">
+                  <span id="helpBlock" class="help-block">BidLogger will make a request to the DSP endpoint you enter above whenever a request is sent to the bucket. The DSP's response will be recorded and sent back as a response.</span>
+              </div>
+              <div class="form-group">
+                <label for="urlOutput">Here is your bucket endpoint</label>
+                  <input ng-model="urlOutput" class="form-control" value="{{ urlOutput }}" id="urlOutput" placeholder="Your endpoint will appear here" readonly></input>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
