@@ -293,6 +293,7 @@
                         $scope.requests = data;
                         for (i = 0; i < data.length; i++) {
                             $scope.requests[i] = JSON.parse($scope.requests[i]);
+                            $scope.requests[i].gatewayResponseBody = JSON.parse($scope.gatewayResponseBody[i]);
                         };
                         console.log($scope.requests);
                         $scope.$apply();
