@@ -42,6 +42,14 @@ app.get("/", function(req, res) {
  	res.render('index'), {root : './'}
 });
 
+app.get("/createBucket", function(req, res) {
+ 	res.render('index'), {root : './'}
+});
+
+app.get("/viewBucket/*", function(req, res) {
+ 	res.render('index'), {root : './'}
+});
+
 // handles a request that needs to be logged
 app.post("/requests/*", function(req, res) {
 	var bucketId = req.path.substr(req.path.length - 7);
