@@ -55,6 +55,7 @@ app.post("/requests/*", function(req, res) {
         client.hset("requests", bucketId, "something"); // TODO: Something if there's no gatewayUrl defined
     } else {
         request.post({
+            time: true,
             headers: {'X-Openrtb-Version' : '2.2'},
             url: gatewayUrl,
             body: JSON.stringify(gatewayRequestPayload)
@@ -66,6 +67,7 @@ app.post("/requests/*", function(req, res) {
                 res.set(response.headers);
                 res.status(response.statusCode);
                 res.send(body);
+                console.log("Response time: " + response.elapsedTime);
                 // push all of the information to the redis db for storage
                 client.lpush(bucketId, JSON.stringify({
                     gatewayGuid: String(Date.now()) + randomstring.generate(15),
@@ -76,7 +78,8 @@ app.post("/requests/*", function(req, res) {
                     gatewayResponseBody: body,
                     gatewayResponseCode: response.statusCode,
                     gatewayResponseHeaders: JSON.stringify(response.headers),
-                    gatewayRequestHeaders: JSON.stringify(req.headers)
+                    gatewayRequestHeaders: JSON.stringify(req.headers),
+                    gatewayResponseTime: response.elapsedTime
                 }));
             }
         }
@@ -101,7 +104,6 @@ app.post("/create-bucket", function(req, res) {
                 'id': rngBucketId,
 			    'created': Date.now()
 			}), function(err, reply) {
-			 	console.log(reply);
 			 	client.hget("buckets", rngBucketId, function(err, reply) {
 			 		if (reply) {
                         res.set('Content-Type', 'application/json');
@@ -193,7 +195,6 @@ app.get("/requests/*", function(req, res) {
             
 			res.set('content-type', 'application/json');
 			res.send(requestsArray);
-            console.log(requestsArray);
 		} else {
 			res.send("Bucket doesn't exist.");
 		}

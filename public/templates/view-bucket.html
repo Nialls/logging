@@ -95,7 +95,7 @@
         </div>
         <div class="panel panel-default" ng-repeat="request in requests">
                         <div class="panel-heading">
-                            <span class="label label-info">{{ request.gatewayResponseCode }}</span> <strong>&nbsp;&nbsp; POST</strong>   {{ request.gatewayRequestUrl }} &nbsp; &nbsp;<strong>UTC</strong>&nbsp;<span ng-bind="dateRender(request.gatewayTimestamp)"></span>
+                            <span class="label label-info">HTTP {{ request.gatewayResponseCode }}</span> <span ng-show="request.gatewayResponseTime" class="label label-default">{{ request.gatewayResponseTime }} ms</span> <strong>&nbsp;&nbsp; POST</strong>   {{ request.gatewayRequestUrl }} &nbsp; &nbsp;<strong>UTC</strong>&nbsp;<span ng-bind="dateRender(request.gatewayTimestamp)"></span>
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
