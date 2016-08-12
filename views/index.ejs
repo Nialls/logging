@@ -212,8 +212,8 @@
                         for (var prop in $scope.buckets) {
                             $scope.buckets[prop] = JSON.parse($scope.buckets[prop]);
                         };
-                        for (i = 0; i < buckets.length; i++) {
-                            var buckets[i].gatewayDatetime = new Date(buckets[i].gatewayTimestamp);
+                        for (i = 0; i < $scope.buckets.length; i++) {
+                            $scope.buckets[i].gatewayDatetime = new Date($scope.buckets[i].gatewayTimestamp);
                         };
                         console.log($scope.buckets);
                         $scope.$apply();
