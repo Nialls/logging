@@ -212,9 +212,6 @@
                         for (var prop in $scope.buckets) {
                             $scope.buckets[prop] = JSON.parse($scope.buckets[prop]);
                         };
-                        for (i = 0; i < $scope.buckets.length; i++) {
-                            $scope.buckets[i].gatewayDatetime = new Date($scope.buckets[i].gatewayTimestamp);
-                        };
                         console.log($scope.buckets);
                         $scope.$apply();
                     })
@@ -264,6 +261,18 @@
 
         bidLogger.controller('ViewBucketController', function($scope, $routeParams) {
             $scope.bucketId = $routeParams.bucketId;
+            $scope.dateRender = function(dateVal) {
+                var date = new Date( parseFloat( dateVal ));
+                var displayDate = 
+                    date.getDate() + "/" +
+                    (date.getMonth() + 1 ) + "/" +
+                    date.getFullYear() + " " +
+                    date.getHours() + ":" +
+                    date.getMinutes();
+                
+                return displayDate;
+            };
+            
             $scope.generateUrl = function () {
                 $scope.urlOutput = "http://logging.nialljones.com/requests/" + $scope.bucketId + "?gateway=" + encodeURIComponent($scope.urlInput)
                 $scope.$apply();
@@ -284,6 +293,7 @@
                         $scope.requests = data;
                         for (i = 0; i < data.length; i++) {
                             $scope.requests[i] = JSON.parse($scope.requests[i]);
+                            $scope.requests[i].gatewayResponseHeaders = JSON.parse($scope.requests[i].gatewayResponseHeaders);
                         };
                         console.log($scope.requests);
                         $scope.$apply();
