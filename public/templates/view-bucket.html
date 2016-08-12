@@ -95,7 +95,7 @@
         </div>
         <div class="panel panel-default" ng-repeat="request in requests">
                         <div class="panel-heading">
-                            <span class="label label-info">{{ request.gatewayResponseCode }}</span> <strong>&nbsp;&nbsp; POST</strong>   {{ request.gatewayRequestUrl }}
+                            <span class="label label-info">{{ request.gatewayResponseCode }}</span> <strong>&nbsp;&nbsp; POST</strong>   {{ request.gatewayRequestUrl }}       {{ Date(request.gatewayTimestamp) }}
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
