@@ -138,7 +138,7 @@
                         <h4 class="modal-title" id="myModalLabel">Response body: <strong>{{ request.gatewayRequestUrl }}</strong></h4>
                       </div>
                       <div class="modal-body">
-                          <pre ng-bind="syntaxHighlight(JSON.stringify(JSON.parse(request.gatewayResponseBody), null, 4))"></pre>
+                          <pre ng-bind-html="syntaxHighlight(request.gatewayResponseBody)"></pre>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
