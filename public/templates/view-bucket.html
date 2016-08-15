@@ -103,7 +103,8 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#" data-toggle="modal" data-target="#ppModal">Response</a>
+                                        <li><a href="#" data-toggle="modal" data-target="#ppModal">Request</a></li>
+                                        <li><a href="#" data-toggle="modal" data-target="#ppRespModal">Response</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -135,10 +136,31 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Response body: <strong>{{ request.gatewayRequestUrl }}</strong></h4>
+                        <h4 class="modal-title" id="myModalLabel">Request Body: <strong>{{ request.gatewayRequestUrl }}</strong></h4>
                       </div>
                       <div class="modal-body">
-                          <pre ng-bind-html="syntaxHighlight(request.gatewayResponseBody)"></pre>
+
+                                <pre ng-bind-html="syntaxHighlight(request.gatewayBody)"></pre>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="modal fade" id="ppRespModal" tabindex="-1" role="dialog" aria-labelledby="ppRespModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Response Body: <strong>{{ request.gatewayRequestUrl }}</strong></h4>
+                      </div>
+                      <div class="modal-body">
+
+                                <pre ng-bind-html="syntaxHighlight(request.gatewayResponseBody)"></pre>
+
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
