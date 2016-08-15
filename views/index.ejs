@@ -298,10 +298,13 @@
             $scope.statusStyle = function(requestStatusCode) {
                 if (requestStatusCode == 200) {
                     return { 'background-color': '#5cb85c !important' };
+                    console.log("200");
                 } else if (requestStatusCode == 500) {
                     return { 'background-color': '#d9534f !important' };
+                    console.log("500");
                 } else {
                     return { 'background-color': '#5bc0de !important' };
+                    console.log("204");
                 };
             }
             
@@ -344,7 +347,7 @@
             };
             
             $scope.generateUrl = function () {
-                $scope.urlOutput = "http://logging.nialljones.com/requests/" + $scope.bucketId + "?gateway=" + encodeURIComponent($scope.urlInput)
+                $scope.urlOutput = "http://logging.nialljones.com/request/" + $scope.bucketId + "?gateway=" + encodeURIComponent($scope.urlInput)
                 $scope.$apply();
             };
             

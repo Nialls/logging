@@ -51,7 +51,7 @@ app.get("/viewBucket/*", function(req, res) {
 });
 
 // handles a request that needs to be logged
-app.post("/requests/*", function(req, res) {
+app.post("/request/*", function(req, res) {
 	var bucketId = req.path.substr(req.path.length - 7);
 	var gatewayUrl = decodeURI(req.query.gateway); // this is the URL that we need to make the secondary request to
 	console.log(bucketId);
@@ -89,6 +89,8 @@ app.post("/requests/*", function(req, res) {
                     gatewayRequestHeaders: JSON.stringify(req.headers),
                     gatewayResponseTime: response.elapsedTime
                 }));
+                client.ltrim(bucketId, 0, 99);
+                client.expire(bucketId, 172800);
             }
         }
         );
