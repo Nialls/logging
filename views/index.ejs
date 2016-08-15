@@ -295,6 +295,16 @@
         bidLogger.controller('ViewBucketController', function($scope, $routeParams) {
             $scope.bucketId = $routeParams.bucketId;
             
+            $scope.statusStyle = function(requestStatusCode) {
+                if (requestStatusCode == 200) {
+                    return { 'background-color': '#5cb85c' };
+                } else if (requestStatusCode == 500) {
+                    return { 'background-color': '#d9534f' };
+                } else {
+                    return { 'background-color': '#5bc0de' };
+                };
+            }
+            
             $scope.syntaxHighlight = function(bodyInput) {
                 if (!bodyInput) {
                     return;
