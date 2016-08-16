@@ -68,7 +68,6 @@ app.post("/request/*", function(req, res) {
             url: gatewayUrl,
             body: JSON.stringify(gatewayRequestPayload)
         }, function (error, response, body) {
-            console.log(response.statusCode);
             if (error) {
                 res.send("EndpointError");
             } else {
