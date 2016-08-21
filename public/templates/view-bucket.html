@@ -105,8 +105,9 @@
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li><a href="#" data-toggle="modal" data-target="#ppModal">Request</a></li>
                                         <li><a href="#" data-toggle="modal" data-target="#ppRespModal">Response</a></li>
-                                        <li class="seperator"></li>
-                                        <li><a ng-href="'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(request.gatewayBody));4" download="data.json">Download</a></li>
+                                        <li class="divider"></li>
+                                        <li ng-show="request.gatewayResponseBody"><a href="#" data-toggle="modal" data-target="#ppValModal" ng-click="jsonValidate(request.gatewayResponseBody)">Validate Response</a></li>
+                                            
                                     </ul>
                                 </div>
                             </div>
@@ -142,6 +143,71 @@
                       <div class="modal-body">
 
                                 <pre ng-bind-html="syntaxHighlight(request.gatewayBody)"></pre>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="modal fade" id="ppRespModal" tabindex="-1" role="dialog" aria-labelledby="ppRespModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Response Body: <strong>{{ request.gatewayRequestUrl }}</strong></h4>
+                      </div>
+                      <div class="modal-body">
+
+                                <pre ng-bind-html="syntaxHighlight(request.gatewayResponseBody)"></pre>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+            
+                <div class="modal fade" id="ppValModal" tabindex="-1" role="dialog" aria-labelledby="ppValModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Validation: <strong>{{ request.gatewayRequestUrl }}</strong></h4>
+                      </div>
+                      <div class="modal-body">
+
+                                <div ng-show="validationData.Valid == true" class="alert alert-success" role="alert">
+                                {{validationData.Messages[0]}}
+                              </div>
+
+                              <div class="alert alert-danger" role="alert" ng-show="(validationData.Valid == false || postFail) && !(validationData.Warn == true && validationData.Messages.length == 1)">
+                                <div ng-show="!postFail"> There <strong><ng-pluralize count="validationData.Messages.length" when="{1: 'is a problem', 'other': 'are {} problems'}"></ng-pluralize></strong> with your bid response, please see below.</div>
+                                <div ng-show="postFail">Encountered an issue connecting to the validation API.</div>
+                              </div>
+
+                              <div ng-show="validationData.Warn" class="alert alert-warning" role="alert">
+                                SpotX does not support <strong>notification URLs</strong> (nurl), you are not required to remove it but it will not be used.
+                              </div>
+
+                              <table ng-show="validationData.Messages.length > 0 && validationData.Valid == false"class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="tscroll">
+                                  <tr ng-repeat="Message in validationData.Messages">
+                                    <th scope="row"><span ng-show="Message.indexOf('nurl') > -1">No</span> Change Required</th>
+                                    <td>{{ Message }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
 
                       </div>
                       <div class="modal-footer">

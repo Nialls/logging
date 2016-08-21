@@ -331,6 +331,35 @@
                     return '<span class="' + cls + '">' + match + '</span>';
                 });
             }
+            
+                    $scope.jsonValidate = function jsonValidate (validationPayload) {
+
+                        $.ajax(
+                    {
+                        //url: "http://localhost:8081/validate",
+                        url: "http://testenv1.nialljones.com/validate",
+                        type: "POST",
+                        data: validationPayload,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-openrtb-version": "2.2"
+                        },
+                        dataType: 'json'
+                    }
+                )
+                    .done(function(data, textStatus, jqXHR) {
+                        console.log(data);
+                        $scope.postFail = false;
+                        $scope.validationData = data;
+                        $scope.$apply()
+                    })
+                    .fail(function(jqXHR, statusText, errorThrown) {
+                        console.log(statusText);
+                        console.log(errorThrown);
+                        $scope.postFail = true;
+                        $scope.$apply()
+                    });
+                  };
 
             
             
@@ -402,6 +431,8 @@
                         $scope.$apply()
                     });
             };
+            
+            
             
             
         });
