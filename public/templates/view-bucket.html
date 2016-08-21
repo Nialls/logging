@@ -105,7 +105,7 @@
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li><a href="#" data-toggle="modal" data-target="#ppModal">Request</a></li>
                                         <li><a href="#" data-toggle="modal" data-target="#ppRespModal">Response</a></li>
-                                        <li class="divider"></li>
+                                        <li class="divider" ng-show="request.gatewayResponseBody"></li>
                                         <li ng-show="request.gatewayResponseBody"><a href="#" data-toggle="modal" data-target="#ppValModal" ng-click="jsonValidate(request.gatewayResponseBody)">Validate Response</a></li>
                                             
                                     </ul>
