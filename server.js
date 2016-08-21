@@ -53,14 +53,30 @@ app.get("/viewBucket/*", function(req, res) {
 // handles a request that needs to be logged
 app.post("/request/*", function(req, res) {
 	var bucketId = req.path.substr(req.path.length - 7);
-	var gatewayUrl = decodeURI(req.query.gateway); // this is the URL that we need to make the secondary request to
+    if (req.query.gateway) {
+	   var gatewayUrl = decodeURI(req.query.gateway); // this is the URL that we need to make the secondary request to
+    };
 	console.log(bucketId);
 	console.log(gatewayUrl);
     var gatewayRequestPayload = req.body;
 	var hostname = req.headers.host;
 	console.log(hostname);
     if (gatewayUrl == undefined) {
-        client.hset("requests", bucketId, "something"); // TODO: Something if there's no gatewayUrl defined
+        client.lpush(bucketId, JSON.stringify({
+                    gatewayGuid: String(Date.now()) + randomstring.generate(15),
+                    gatewayTimestamp: Date.now(),
+                    gatewayRequestUrl: "No DSP Endpoint",
+                    gatewayOriginHost: hostname,
+                    gatewayBody: JSON.stringify(gatewayRequestPayload),
+                    gatewayResponseBody: "",
+                    gatewayResponseCode: 200,
+                    gatewayResponseHeaders: JSON.stringify({internal: "internal"}),
+                    gatewayRequestHeaders: "",
+                    gatewayResponseTime: 0
+                }));
+        res.send("");
+        client.ltrim(bucketId, 0, 99);
+        client.expire(bucketId, 172800);
     } else {
         request.post({
             time: true,
@@ -135,30 +151,26 @@ app.post("/edit-bucket", function(req, res) {
 	var editBucketName = req.body.name;
 	var editBucketDesc = req.body.desc;
     var editBucketId   = req.body.id;
-	client.exists(editBucketId, function(err, reply) {
-	    if (reply == 1) {
-	    	console.log("Success - writing to DB");
-	        client.hset("buckets", editBucketId, JSON.stringify({
-			    'name': editBucketName,
-			    'desc': editBucketDesc,
-                'id': editBucketId,
-			    'created': Date.now()
-			}), function(err, reply) {
-			 	console.log(reply);
-			 	client.hget("buckets", editBucketId, function(err, reply) {
-			 		if (reply) {
-                        res.set('Content-Type', 'application/json');
-			 			res.send(reply);
-			 		} else {
-			 			res.send(err);
-			 		}
-				});
-			});
-	    } else {
-	    	console.log("This bucket doesn't exist");
-	    }
+	console.log("Success - writing to DB");
+	client.hset("buckets", editBucketId, JSON.stringify({
+	    'name': editBucketName,
+	    'desc': editBucketDesc,
+        'id': editBucketId,
+	    'created': Date.now()
+	}), function(err, reply) {
+	 	console.log(reply);
+	 	client.hget("buckets", editBucketId, function(err, reply) {
+	 		if (reply) {
+                res.set('Content-Type', 'application/json');
+	 			res.send(reply);
+	 		} else {
+	 			res.send(err);
+	 		}
+		});
 	});
+
 });
+
 
 // gets a list of all buckets
 app.get("/buckets", function(req, res) {
