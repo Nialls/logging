@@ -106,7 +106,7 @@
                             <a href="#"><i class="fa fa-database fa-fw"></i> Buckets<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li ng-repeat="(key,val) in buckets">
-                                    <a href="viewBucket/{{key}}"><strong>{{ val.name }}</strong> <span class="pull-right" style="font-size: 12px"><span class="fa fa-cog"></span>  {{key}}</span></a>
+                                    <a href="viewBucket/{{key}}" style="text-overflow: ellipsis !important; white-space: nowrap !important; overflow: hidden;"><strong>{{ val.name }}</strong> <span class="pull-right" style="font-size: 12px"><span class="fa fa-cog"></span>  {{key}}</span></a>
                                 </li>
                                  <li ng-show="Object.values.length == 0">
                                     No buckets found
