@@ -1,5 +1,13 @@
 <h2>Create a new bucket</h2>
 <hr>
+  <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Information about buckets and requests</h3>
+      </div>
+      <div class="panel-body">
+        All requests are ephemeral and are set to expire after 48 hours, after which time they will no longer be visible in the UI. Please be a good citizen and remember to remove the logging endpoint from your deal after you've finished with it.
+      </div>
+  </div>
 <form>
   <div class="form-group">
     <label for="bucketNameInput">Name</label>
@@ -10,4 +18,7 @@
       <textarea ng-model="bucketDescEntry" class="form-control" id="bucketDescInput" placeholder="Enter a short description here"></textarea>
   </div>
   <button type="submit" class="btn btn-default" ng-click="createBucket()">Create bucket<span class="wait" id="wait">    <img src="img/loading.svg"></span></button>
+
 </form>
+<br>
+
