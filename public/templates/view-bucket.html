@@ -104,8 +104,9 @@
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li><a href="#" data-toggle="modal" data-target="#ppModal">Request</a></li>
-                                        <li><a href="#" data-toggle="modal" data-target="#ppRespModal">Response</a>
-                                        </li>
+                                        <li><a href="#" data-toggle="modal" data-target="#ppRespModal">Response</a></li>
+                                        <li class="seperator"></li>
+                                        <li><a ng-href="'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(request.gatewayBody));4" download="data.json">Download</a></li>
                                     </ul>
                                 </div>
                             </div>
