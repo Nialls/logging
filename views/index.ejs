@@ -295,21 +295,18 @@
         bidLogger.controller('ViewBucketController', function($scope, $routeParams) {
             $scope.bucketId = $routeParams.bucketId;
             
-            $scope.statusStyle = function(requestStatusCode) {
-                if (requestStatusCode == 200) {
-                    return { 'background-color': '#5cb85c !important' };
+            $scope.responseStyle = function(stCode, stBody) {
+                if (stCode == 200 && stBody !== undefined) {
+                    return { 'background-color': '#dff0d8 !important' };
                     console.log("200");
-                } else if (requestStatusCode == 500) {
-                    return { 'background-color': '#d9534f !important' };
-                    console.log("500");
                 } else {
-                    return { 'background-color': '#5bc0de !important' };
-                    console.log("204");
+                    return { 'background-color': '#f5f5f5 !important' };
+                    console.log("xxx");
                 };
-            }
+            };
             
             $scope.syntaxHighlight = function(bodyInput) {
-                if (!bodyInput) {
+                if (!bodyInput || bodyInput.charAt(0) !== "{") {
                     return;
                 };
                 
@@ -393,7 +390,11 @@
                     .done(function(data, textStatus, jqXHR) {
                         $scope.requests = data;
                         for (i = 0; i < data.length; i++) {
-                            $scope.requests[i] = JSON.parse($scope.requests[i]);
+                            try {
+                                $scope.requests[i] = JSON.parse($scope.requests[i]);
+                            } catch (err) {
+                                console.log(err);
+                            };
                             $scope.requests[i].gatewayResponseHeaders = JSON.parse($scope.requests[i].gatewayResponseHeaders);
                         };
                         console.log($scope.requests);
