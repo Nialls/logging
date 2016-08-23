@@ -52,7 +52,6 @@ app.get("/viewBucket/*", function(req, res) {
 
 // handles a request that needs to be logged
 app.post("/request/*", function(req, res) {
-    var pushData = {};
 	var bucketId = req.path.substr(req.path.length - 7);
     if (req.query.gateway) {
 	   var gatewayUrl = decodeURI(req.query.gateway); // this is the URL that we need to make the secondary request to
@@ -93,7 +92,7 @@ app.post("/request/*", function(req, res) {
                 res.send(body);
                 console.log("Response time: " + response.elapsedTime);
                 // push all of the information to the redis db for storage
-                pushData = {
+                client.lpush(bucketId, JSON.stringify({
                     gatewayGuid: String(Date.now()) + randomstring.generate(15),
                     gatewayTimestamp: Date.now(),
                     gatewayRequestUrl: gatewayUrl,
@@ -104,18 +103,9 @@ app.post("/request/*", function(req, res) {
                     gatewayResponseHeaders: JSON.stringify(response.headers),
                     gatewayRequestHeaders: JSON.stringify(req.headers),
                     gatewayResponseTime: response.elapsedTime
-                };
-                client.lpush(bucketId, JSON.stringify(pushData));
+                }));
                 client.ltrim(bucketId, 0, 99);
                 client.expire(bucketId, 172800);
-                request.post({
-                    url: "https://api.keen.io/3.0/projects/57bc17f88db53dfda8a6cd44/events/Requests?api_key=E8438AFF0C1DB7361422684F34F1ED50AA0793F82356EC3A0651145740D9665E6739ADE322D166253A5F7981280DECAF9D80F0BECFE2C7835CA1F5B503A5A865298C12D5C30257E46448A8AA64ADA490052FF7F8E7063EEA551DB6B0D132E7A4",
-                    body: JSON.stringify(pushData)
-                }, function (error, response, body) {
-                    if (error) {
-                    console.log("Error pushing to KeenIO")
-                    };
-                });
             }
         }
         );
