@@ -50,6 +50,63 @@ app.get("/viewBucket/*", function(req, res) {
  	res.render('index'), {root : './'}
 });
 
+app.get("/request/*", function(req, res) {
+	var bucketId = req.path.substr(req.path.length - 7);
+    if (req.query.gateway) {
+	   var gatewayUrl = decodeURI(req.query.gateway); // this is the URL that we need to make the secondary request to
+    };
+	console.log(bucketId);
+	console.log(gatewayUrl);
+	var hostname = req.headers.host;
+	console.log(hostname);
+    if (gatewayUrl == undefined) {
+        client.lpush(bucketId, JSON.stringify({
+                    gatewayGuid: String(Date.now()) + randomstring.generate(15),
+                    gatewayTimestamp: Date.now(),
+                    gatewayRequestUrl: "No DSP Endpoint",
+                    gatewayOriginHost: hostname,
+                    gatewayResponseBody: "",
+                    gatewayResponseCode: 200,
+                    gatewayResponseHeaders: JSON.stringify({internal: "internal"}),
+                    gatewayRequestHeaders: "",
+                    gatewayResponseTime: 0
+                }));
+        res.send("");
+        client.ltrim(bucketId, 0, 99);
+        client.expire(bucketId, 172800);
+    } else {
+        request.get({
+            time: true,
+            headers: {'X-Openrtb-Version' : '2.2'},
+            url: gatewayUrl
+        }, function (error, response, body) {
+            if (error) {
+                res.send("EndpointError");
+            } else {
+                res.set(response.headers);
+                res.status(response.statusCode);
+                res.send(body);
+                console.log("Response time: " + response.elapsedTime);
+                // push all of the information to the redis db for storage
+                client.lpush(bucketId, JSON.stringify({
+                    gatewayGuid: String(Date.now()) + randomstring.generate(15),
+                    gatewayTimestamp: Date.now(),
+                    gatewayRequestUrl: gatewayUrl,
+                    gatewayOriginHost: hostname,
+                    gatewayResponseBody: body,
+                    gatewayResponseCode: response.statusCode,
+                    gatewayResponseHeaders: JSON.stringify(response.headers),
+                    gatewayRequestHeaders: JSON.stringify(req.headers),
+                    gatewayResponseTime: response.elapsedTime
+                }));
+                client.ltrim(bucketId, 0, 99);
+                client.expire(bucketId, 172800);
+            }
+        }
+        );
+    };
+});
+
 // handles a request that needs to be logged
 app.post("/request/*", function(req, res) {
 	var bucketId = req.path.substr(req.path.length - 7);
