@@ -14,6 +14,8 @@
 # [START runtime]
 runtime: nodejs
 env: flex
+env_variables:
+	REDIS_URL: 'http://10.142.0.4:6379'
 # [END runtime]
 
 # Temporary setting to keep gcloud from uploading node_modules

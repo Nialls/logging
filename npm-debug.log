@@ -1,0 +1,38 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'shrinkwrap' ]
+2 info using npm@3.6.0
+3 info using node@v5.7.0
+4 verbose stack Error: Problems were encountered
+4 verbose stack Please correct and try again.
+4 verbose stack extraneous: body-parser@1.15.1 /Users/nialljones/Documents/Projects/logging/node_modules/body-parser
+4 verbose stack extraneous: ejs@2.4.1 /Users/nialljones/Documents/Projects/logging/node_modules/ejs
+4 verbose stack extraneous: express@4.13.4 /Users/nialljones/Documents/Projects/logging/node_modules/express
+4 verbose stack extraneous: less@2.7.1 /Users/nialljones/Documents/Projects/logging/node_modules/less
+4 verbose stack extraneous: method-override@2.3.5 /Users/nialljones/Documents/Projects/logging/node_modules/method-override
+4 verbose stack extraneous: request@2.72.0 /Users/nialljones/Documents/Projects/logging/node_modules/request
+4 verbose stack     at shrinkwrap_ (/usr/local/lib/node_modules/npm/lib/shrinkwrap.js:101:15)
+4 verbose stack     at /usr/local/lib/node_modules/npm/lib/shrinkwrap.js:36:5
+4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+4 verbose stack     at /usr/local/lib/node_modules/npm/lib/install/deps.js:121:5
+4 verbose stack     at LOOP (/usr/local/lib/node_modules/npm/node_modules/slide/lib/chain.js:7:26)
+4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/chain.js:18:7
+4 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+4 verbose stack     at /usr/local/lib/node_modules/npm/lib/install/deps.js:121:5
+4 verbose stack     at LOOP (/usr/local/lib/node_modules/npm/node_modules/slide/lib/chain.js:7:26)
+4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/chain.js:18:7
+5 verbose cwd /Users/nialljones/Documents/Projects/logging
+6 error Darwin 16.0.0
+7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "shrinkwrap"
+8 error node v5.7.0
+9 error npm  v3.6.0
+10 error Problems were encountered
+10 error Please correct and try again.
+10 error extraneous: body-parser@1.15.1 /Users/nialljones/Documents/Projects/logging/node_modules/body-parser
+10 error extraneous: ejs@2.4.1 /Users/nialljones/Documents/Projects/logging/node_modules/ejs
+10 error extraneous: express@4.13.4 /Users/nialljones/Documents/Projects/logging/node_modules/express
+10 error extraneous: less@2.7.1 /Users/nialljones/Documents/Projects/logging/node_modules/less
+10 error extraneous: method-override@2.3.5 /Users/nialljones/Documents/Projects/logging/node_modules/method-override
+10 error extraneous: request@2.72.0 /Users/nialljones/Documents/Projects/logging/node_modules/request
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]
