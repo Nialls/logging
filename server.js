@@ -69,7 +69,8 @@ app.get("/request/*", function(req, res) {
                     gatewayResponseCode: 200,
                     gatewayResponseHeaders: JSON.stringify({internal: "internal"}),
                     gatewayRequestHeaders: "",
-                    gatewayResponseTime: 0
+                    gatewayResponseTime: 0,
+                    gatewayRequestMethod: "GET"
                 }));
         res.send("");
         client.ltrim(bucketId, 0, 99);
@@ -77,7 +78,6 @@ app.get("/request/*", function(req, res) {
     } else {
         request.get({
             time: true,
-            headers: {'X-Openrtb-Version' : '2.2'},
             url: gatewayUrl
         }, function (error, response, body) {
             if (error) {
@@ -97,7 +97,8 @@ app.get("/request/*", function(req, res) {
                     gatewayResponseCode: response.statusCode,
                     gatewayResponseHeaders: JSON.stringify(response.headers),
                     gatewayRequestHeaders: JSON.stringify(req.headers),
-                    gatewayResponseTime: response.elapsedTime
+                    gatewayResponseTime: response.elapsedTime,
+                    gatewayRequestMethod: "GET"
                 }));
                 client.ltrim(bucketId, 0, 99);
                 client.expire(bucketId, 172800);
@@ -129,7 +130,8 @@ app.post("/request/*", function(req, res) {
                     gatewayResponseCode: 200,
                     gatewayResponseHeaders: JSON.stringify({internal: "internal"}),
                     gatewayRequestHeaders: "",
-                    gatewayResponseTime: 0
+                    gatewayResponseTime: 0,
+                    gatewayRequestMethod: "POST"
                 }));
         res.send("");
         client.ltrim(bucketId, 0, 99);
@@ -159,7 +161,8 @@ app.post("/request/*", function(req, res) {
                     gatewayResponseCode: response.statusCode,
                     gatewayResponseHeaders: JSON.stringify(response.headers),
                     gatewayRequestHeaders: JSON.stringify(req.headers),
-                    gatewayResponseTime: response.elapsedTime
+                    gatewayResponseTime: response.elapsedTime,
+                    gatewayRequestMethod: "POST"
                 }));
                 client.ltrim(bucketId, 0, 99);
                 client.expire(bucketId, 172800);
